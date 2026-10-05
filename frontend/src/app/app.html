@@ -1,9 +1,10 @@
+<a class="skip-link" href="#main-content">Skip to content</a>
 <div class="app-shell">
   <!-- Classic Header -->
   <app-header (openAuthModal)="openAuthModal()"></app-header>
 
   <!-- Main View Container -->
-  <main class="app-main-content">
+  <main class="app-main-content" id="main-content" tabindex="-1">
     <router-outlet></router-outlet>
   </main>
 

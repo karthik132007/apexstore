@@ -1,262 +1,60 @@
 <div class="catalog-page">
-  <!-- Top Editorial Banner Strip -->
-  @if (!searchKeyword() && currentPage() === 0 && activeCategory() === 'All') {
-    <app-banner-strip></app-banner-strip>
-  }
-
-  <div class="fk-container">
-    <!-- Breadcrumbs -->
-    <div class="breadcrumbs-bar">
-      <a routerLink="/" class="crumb-link">Home</a>
-      <span class="crumb-sep">/</span>
-      <span class="crumb-active">{{ activeCategory() }}</span>
-      @if (searchKeyword()) {
-        <span class="crumb-sep">/</span>
-        <span class="crumb-query">Search: "{{ searchKeyword() }}"</span>
-      }
+  @if (!searchKeyword() && currentPage() === 0 && activeCategory() === 'All') { <app-banner-strip /> }
+  <section class="fk-container product-section" id="products" aria-labelledby="catalog-heading">
+    <div class="catalog-heading" appReveal>
+      <div><span class="eyebrow">THE APEXMART COLLECTION</span>
+        @if (!searchKeyword() && currentPage() === 0 && activeCategory() === 'All') { <h2 id="catalog-heading">Meet your next everyday.</h2> }
+        @else { <h1 id="catalog-heading">{{ searchKeyword() ? 'Results for “' + searchKeyword() + '”' : activeCategory() === 'All' ? 'The collection.' : activeCategory() + '.' }}</h1> }
+      </div>
+      <span class="result-count">{{ isLoading() ? 'Finding good things…' : loadError() ? 'Collection unavailable' : totalElements() + ' objects to discover' }}</span>
     </div>
-
-    <!-- Main 2-Column Catalog Layout -->
-    <div class="catalog-layout" id="products">
-      <button type="button" class="mobile-filter-toggle btn btn-outline" [attr.aria-expanded]="filtersOpen()" aria-controls="catalog-filters" (click)="filtersOpen.set(!filtersOpen())">
-        {{ filtersOpen() ? 'Hide filters' : 'Filter products' }}
-      </button>
-      <!-- Left Sidebar: Filters Rail -->
-      <aside class="filters-sidebar" id="catalog-filters" [class.mobile-open]="filtersOpen()">
-        <div class="filters-header">
-          <div class="filters-title-group">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2">
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-            </svg>
-            <span class="filters-title">Shop by</span>
-          </div>
-          <button type="button" class="clear-all-btn" (click)="clearFilters()">Reset</button>
-        </div>
-
-        <!-- Categories Section -->
-        <div class="filter-section">
-          <div class="filter-section-title">CATEGORIES</div>
-          <ul class="filter-category-list">
-            @for (cat of categoriesList; track cat) {
-              <li class="filter-category-item">
-                <button 
-                  type="button" 
-                  class="category-btn" 
-                  [class.active]="activeCategory() === cat"
-                  (click)="onCategorySelect(cat)">
-                  <span class="cat-indicator"></span>
-                  <span>{{ cat }}</span>
-                </button>
-              </li>
-            }
-          </ul>
-        </div>
-
-        <!-- Price Range Section -->
-        <div class="filter-section">
-          <div class="filter-section-title">PRICE ON THIS PAGE</div>
-          <div class="price-quick-pills">
-            <button 
-              type="button" 
-              class="price-pill" 
-              [class.active]="maxPrice() === 500" 
-              (click)="setPriceRange(null, 500)">
-              Under ₹500
-            </button>
-            <button 
-              type="button" 
-              class="price-pill" 
-              [class.active]="minPrice() === 500 && maxPrice() === 2000" 
-              (click)="setPriceRange(500, 2000)">
-              ₹500 — ₹2,000
-            </button>
-            <button 
-              type="button" 
-              class="price-pill" 
-              [class.active]="minPrice() === 2000" 
-              (click)="setPriceRange(2000, null)">
-              ₹2,000 & Above
-            </button>
-          </div>
-
-          <div class="price-inputs-row">
-            <input 
-              type="number" 
-              class="price-input" 
-              placeholder="Min" 
-              [ngModel]="minPrice()" 
-              (ngModelChange)="minPrice.set($event)">
-            <span class="price-dash">—</span>
-            <input 
-              type="number" 
-              class="price-input" 
-              placeholder="Max" 
-              [ngModel]="maxPrice()" 
-              (ngModelChange)="maxPrice.set($event)">
-          </div>
-        </div>
-
-        <!-- Availability Section -->
-        <div class="filter-section">
-          <div class="filter-section-title">AVAILABILITY ON THIS PAGE</div>
-          <label class="filter-checkbox-label">
-            <input 
-              type="checkbox" 
-              [checked]="inStockOnly()" 
-              (change)="inStockOnly.set(!inStockOnly())">
-            <span>In Stock Only</span>
-          </label>
-        </div>
-
-      </aside>
-
-      <!-- Right Column: Products & Sort Bar -->
-      <main class="products-main">
-        <!-- Results & Sort Header Strip -->
-        <div class="results-header-strip">
-          <div class="results-count-text">
-            <span>Showing</span>
-            <strong>{{ filteredProducts().length }}</strong>
-            <span>of</span>
-            <strong>{{ totalElements() }}</strong>
-            <span>products</span>
-            @if (activeCategory() !== 'All') {
-              <span>in <em>{{ activeCategory() }}</em></span>
-            }
-          </div>
-
-          <div class="sort-bar">
-            <span class="sort-label">Sort:</span>
-            <div class="sort-tabs">
-              @for (opt of sortOptions; track opt.label) {
-                <button 
-                  type="button" 
-                  class="sort-tab-btn" 
-                  [class.active]="selectedSort() === opt.value"
-                  (click)="onSortChange(opt.value)">
-                  {{ opt.label }}
-                </button>
-              }
+    <div class="catalog-toolbar">
+      <nav class="category-tabs" aria-label="Product categories">
+        @for (cat of categoriesList; track cat) { <button type="button" [class.active]="activeCategory() === cat" [attr.aria-pressed]="activeCategory() === cat" (click)="onCategorySelect(cat)">{{ cat === 'All' ? 'All objects' : cat }}</button> }
+      </nav>
+      <div class="catalog-tools">
+        <button class="filter-toggle" [class.active]="filtersOpen()" [attr.aria-expanded]="filtersOpen()" aria-controls="catalog-filters" (click)="filtersOpen.set(!filtersOpen())"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 14h14M7 3v6M13 11v6"/></svg> Filters</button>
+        <label class="sort-control"><span class="sr-only">Sort products</span><select [ngModel]="selectedSort()" (ngModelChange)="onSortChange($event)">@for (opt of sortOptions; track opt.value) { <option [value]="opt.value">{{ opt.label }}</option> }</select></label>
+      </div>
+    </div>
+    @if (filtersOpen()) {
+      <div class="filter-panel" id="catalog-filters">
+        <fieldset><legend>Price on this page</legend><div class="price-quick-pills">
+          <button class="price-pill" [class.active]="maxPrice() === 500" (click)="setPriceRange(null, 500)">Under ₹500</button>
+          <button class="price-pill" [class.active]="minPrice() === 500 && maxPrice() === 2000" (click)="setPriceRange(500, 2000)">₹500 – ₹2,000</button>
+          <button class="price-pill" [class.active]="minPrice() === 2000 && maxPrice() === null" (click)="setPriceRange(2000, null)">₹2,000 and above</button>
+        </div></fieldset>
+        <div class="price-inputs-row"><label><span>Min price</span><input type="number" min="0" placeholder="₹0" [ngModel]="minPrice()" (ngModelChange)="minPrice.set($event)"></label><span>–</span><label><span>Max price</span><input type="number" min="0" placeholder="No limit" [ngModel]="maxPrice()" (ngModelChange)="maxPrice.set($event)"></label></div>
+        <label class="filter-checkbox-label"><input type="checkbox" [checked]="inStockOnly()" (change)="inStockOnly.set(!inStockOnly())"> In stock on this page</label>
+        <button class="clear-all-btn" (click)="clearFilters()">Reset filters</button>
+      </div>
+    }
+    @if (minPrice() !== null || maxPrice() !== null || inStockOnly()) { <div class="active-filter-note">Showing {{ filteredProducts().length }} matches on this page.<button (click)="setPriceRange(null, null); inStockOnly.set(false)">Clear price &amp; availability filters ×</button></div> }
+    @if (isLoading()) {
+      <div class="product-grid" aria-busy="true" aria-label="Loading products">@for (item of [1,2,3,4]; track item) { <div class="skeleton-card"><div class="skeleton-media"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div> }</div>
+    } @else if (loadError()) {
+      <div class="empty-catalog-state" role="status"><span class="empty-state-mark" aria-hidden="true">↻</span><h3>A little pause in the collection.</h3><p>We couldn’t load the products right now. Give it another try.</p><button class="btn btn-outline" (click)="loadProducts()">Try again <span aria-hidden="true">↗</span></button></div>
+    } @else if (filteredProducts().length === 0) {
+      <div class="empty-catalog-state" role="status"><span class="empty-state-mark" aria-hidden="true">⌕</span><h3>Still looking for the one?</h3><p>Try a different search or give your filters a fresh start.</p><button class="btn btn-outline" (click)="clearFilters()">Explore all objects <span aria-hidden="true">↗</span></button></div>
+    } @else {
+      <div class="product-grid">
+        @for (product of filteredProducts(); track product.id) {
+          <article class="product-card" appReveal>
+            <div class="card-media"><a [routerLink]="['/product', product.id]" class="product-image-link"><img [src]="product.imageUrl || '/product-placeholder.svg'" (error)="onImageError($event)" [alt]="product.name" class="product-image" loading="lazy" width="500" height="500"></a>
+              @if (product.availableStock <= 0) { <span class="unavailable-badge">Out of stock</span> }
+              <button class="quick-add" [disabled]="product.availableStock <= 0" (click)="addToCart(product, $event)" [attr.aria-label]="'Add ' + product.name + ' to bag'"><span aria-hidden="true">+</span></button>
             </div>
-          </div>
-        </div>
-
-        <!-- Loading State -->
-        @if (isLoading()) {
-          <div class="loading-container">
-            <div class="spinner-large"></div>
-            <p>Loading products…</p>
-          </div>
-        } @else if (loadError()) {
-          <div class="empty-catalog-state" role="status">
-            <h3>Products are temporarily unavailable</h3>
-            <p>Please try again in a moment.</p>
-            <button class="btn btn-primary" (click)="loadProducts()">Try again</button>
-          </div>
-        } @else if (filteredProducts().length === 0) {
-          <!-- Empty State -->
-          <div class="empty-catalog-state">
-            <div class="empty-icon">🔍</div>
-            <h3>No matching products</h3>
-            <p>Try another search or clear your filters.</p>
-            <button class="btn btn-primary" (click)="clearFilters()">Reset All Filters</button>
-          </div>
-        } @else {
-          <!-- Product Grid -->
-          <div class="product-grid">
-            @for (product of filteredProducts(); track product.id) {
-              <article class="product-card">
-                <!-- Card Media -->
-                <div class="card-media">
-                  <a [routerLink]="['/product', product.id]" class="product-image-link">
-                  <img 
-                    [src]="product.imageUrl || '/product-placeholder.svg'"
-                    (error)="onImageError($event)" 
-                    [alt]="product.name" 
-                    class="product-image" 
-                    loading="lazy">
-                  </a>
-                  
-                </div>
-
-                <!-- Card Content -->
-                <div class="card-body">
-                  <div class="product-category-row">
-                    <span class="product-category-tag">{{ product.category }}</span>
-                    
-                  </div>
-                  
-                  <h2 class="product-title"><a [routerLink]="['/product', product.id]">{{ product.name }}</a></h2>
-
-                  <!-- Price -->
-                  <div class="price-row">
-                    <span class="price-current">₹{{ product.price | number:'1.2-2' }}</span>
-
-                  </div>
-
-                  <!-- Stock Status Gauge -->
-                  <div class="stock-status-row">
-                    @if (product.availableStock > 0) {
-                      <span class="stock-badge in-stock">
-                        ● {{ product.availableStock }} available
-                      </span>
-                    } @else {
-                      <span class="stock-badge out-stock">
-                        ● Out of stock
-                      </span>
-                    }
-                  </div>
-
-
-                </div>
-
-                <!-- Card Actions -->
-                <div class="card-actions">
-                  <button 
-                    type="button" 
-                    class="btn btn-cart card-cart-btn" 
-                    [disabled]="product.availableStock <= 0"
-                    (click)="addToCart(product, $event)">
-                    Add to Cart
-                  </button>
-                  <button 
-                    type="button" 
-                    class="btn btn-buy card-buy-btn" 
-                    [disabled]="product.availableStock <= 0"
-                    (click)="buyNow(product, $event)">
-                    Buy now
-                  </button>
-                </div>
-              </article>
-            }
-          </div>
-
-          <!-- Pagination Bar -->
-          @if (totalPages() > 1) {
-            <div class="pagination-bar">
-              <button 
-                type="button" 
-                class="btn btn-outline page-nav-btn" 
-                [disabled]="currentPage() === 0"
-                (click)="goToPage(currentPage() - 1)">
-                ← Previous
-              </button>
-
-              <div class="page-indicators">
-                <span>Page <strong>{{ currentPage() + 1 }}</strong> of <strong>{{ totalPages() }}</strong></span>
-              </div>
-
-              <button 
-                type="button" 
-                class="btn btn-outline page-nav-btn" 
-                [disabled]="currentPage() >= totalPages() - 1"
-                (click)="goToPage(currentPage() + 1)">
-                Next →
-              </button>
-            </div>
-          }
+            <div class="card-body"><span class="product-category-tag">{{ product.category }}</span><div class="product-info-row"><h3 class="product-title"><a [routerLink]="['/product', product.id]">{{ product.name }}</a></h3><span class="product-price">₹{{ product.price | number:'1.0-2' }}</span></div><p class="product-description">{{ product.description }}</p></div>
+          </article>
         }
-      </main>
-    </div>
-  </div>
+      </div>
+    }
+    @if (totalPages() > 1) {
+      <nav class="pagination" aria-label="Catalog pagination"><button class="btn btn-outline" [disabled]="currentPage() === 0" (click)="goToPage(currentPage() - 1)">← Previous</button><span>Page {{ currentPage() + 1 }} of {{ totalPages() }}</span><button class="btn btn-outline" [disabled]="currentPage() >= totalPages() - 1" (click)="goToPage(currentPage() + 1)">Next →</button></nav>
+    }
+  </section>
+  @if (!searchKeyword() && currentPage() === 0 && activeCategory() === 'All') {
+    <section class="philosophy-section" id="philosophy" aria-labelledby="philosophy-heading"><div class="fk-container philosophy-layout" appReveal><div><span class="eyebrow">OUR PERSPECTIVE</span><span class="philosophy-symbol" aria-hidden="true">✳</span></div><div class="philosophy-copy"><h2 id="philosophy-heading">The things you choose.<br>The life you make.</h2><p>We believe the best things don’t ask for your attention.<br>They earn a place in your life. Useful. Thoughtful. Simply good.</p><a href="#products" class="text-link">Find your everyday <span aria-hidden="true">↗</span></a></div><span class="philosophy-number" aria-hidden="true">LESS, BUT BETTER. ALWAYS.</span></div></section>
+    <div class="fk-container service-strip" appReveal><div><span class="service-number">01</span><strong>Explore at your pace.</strong><p>A space to find what feels right.</p></div><div><span class="service-number">02</span><strong>All in one place.</strong><p>Tech, style, and things for your home.</p></div><div><span class="service-number">03</span><strong>Make it yours.</strong><p>Your bag, your orders, your everyday.</p></div></div>
+  }
 </div>

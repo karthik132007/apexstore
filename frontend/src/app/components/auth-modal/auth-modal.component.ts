@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
+import { DialogDirective } from '../../directives/dialog.directive';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -6,7 +7,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-auth-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [DialogDirective, CommonModule, FormsModule],
   templateUrl: './auth-modal.component.html',
   styleUrls: ['./auth-modal.component.css']
 })

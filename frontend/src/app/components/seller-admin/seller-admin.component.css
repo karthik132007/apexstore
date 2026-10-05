@@ -19,7 +19,7 @@
 }
 
 .crumb-sep {
-  color: #cbd5e1;
+  color: #d4d4d4;
 }
 
 .crumb-active {
@@ -58,13 +58,13 @@
 
 /* Become a Merchant Hero */
 .become-seller-hero {
-  background: radial-gradient(ellipse at top left, #1e293b 0%, #0f172a 65%, #020617 100%);
+  background: #f3f3f3;
   color: #fff;
   border-radius: var(--radius-md);
   padding: 48px;
   box-shadow: var(--shadow-lg);
   margin-top: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .hero-tag {
@@ -83,7 +83,7 @@
 
 .seller-hero-content p {
   font-size: 15px;
-  color: #cbd5e1;
+  color: #d4d4d4;
   max-width: 700px;
   line-height: 1.55;
   margin-bottom: 24px;
@@ -99,11 +99,11 @@
 .benefit-item {
   font-size: 13.5px;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   padding: 7px 16px;
   border-radius: var(--radius-sm);
-  color: #f1f5f9;
+  color: #f4f4f4;
 }
 
 .start-selling-btn {
@@ -196,7 +196,7 @@
   padding: 12px 14px;
   text-align: left;
   font-weight: 700;
-  color: #475569;
+  color: #535353;
 }
 
 .inventory-table td {
@@ -246,7 +246,7 @@
 }
 
 .reserved-num {
-  color: #b45309;
+  color: #626262;
   font-weight: 700;
 }
 
@@ -287,7 +287,7 @@
 
 .delete-btn {
   color: var(--brand-crimson);
-  border-color: #fca5a5;
+  border-color: #b7b7b7;
 }
 .delete-btn:hover {
   background: var(--brand-crimson-light);
@@ -358,7 +358,7 @@
 }
 .sample-pill:hover {
   background: var(--brand-accent-light);
-  color: #0b0f19;
+  color: #0f0f0f;
   border-color: var(--brand-accent);
 }
 
@@ -400,3 +400,11 @@
   padding: 60px 20px;
   text-align: center;
 }
+
+.become-seller-hero { background: #f3f3f3; color: #171717; border: 1px solid #e7e7e7; box-shadow: none; }
+.seller-hero-content h1 { font-size: 44px; font-weight: 400; letter-spacing: -1.5px; }
+.seller-hero-content p { color: #626262; }
+.benefit-item { background: #fff; border-color: #ddd; color: #333; }
+
+.auth-required-card { border: 0; padding-block: 80px; }
+.auth-required-card h2 { font-size: 36px; font-weight: 400; letter-spacing: -1.3px; }

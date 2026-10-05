@@ -1,27 +1,34 @@
-<section class="banner-section" aria-labelledby="shop-heading">
-  <div class="fk-container">
-    <div class="shop-intro">
-      <div class="intro-copy">
-        <span class="intro-eyebrow">A little something for your everyday</span>
-        <h1 id="shop-heading">Good finds.<br>Everyday essentials.</h1>
-        <p>Find something for your desk, your wardrobe, or your home. Take a look around.</p>
-        <a href="#products" class="shop-link">Browse products <span aria-hidden="true">↗</span></a>
-      </div>
-      <nav class="category-edit" aria-label="Shop by category">
-        <span class="category-caption">Where would you like to start?</span>
-        <a routerLink="/" [queryParams]="{ category: 'Electronics' }" class="category-pick">
-          <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="6" width="24" height="16" rx="3"/><path d="M12 27h8M16 22v5"/></svg>
-          <span><strong>For your desk</strong><small>Explore electronics</small></span><span aria-hidden="true">↗</span>
-        </a>
-        <a routerLink="/" [queryParams]="{ category: 'Fashion' }" class="category-pick">
-          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="m11 5-7 4 3 7 4-2v13h10V14l4 2 3-7-7-4c0 5-10 5-10 0Z"/></svg>
-          <span><strong>For your wardrobe</strong><small>Explore fashion</small></span><span aria-hidden="true">↗</span>
-        </a>
-        <a routerLink="/" [queryParams]="{ category: 'Home' }" class="category-pick">
-          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="m4 15 12-10 12 10M8 12v15h16V12M13 27v-9h6v9"/></svg>
-          <span><strong>For your space</strong><small>Explore home</small></span><span aria-hidden="true">↗</span>
-        </a>
-      </nav>
+<div class="fk-container">
+  <div class="editorial-note"><span>A considered collection. An everyday upgrade.</span><a href="#collections">Explore the edit <span aria-hidden="true">↗</span></a></div>
+  <section class="shop-intro" aria-labelledby="shop-heading">
+    <div class="intro-copy" appReveal>
+      <span class="eyebrow"><span class="edition-dot"></span> THE EVERYDAY, RECONSIDERED</span>
+      <h1 id="shop-heading">Less.<br>But better.</h1>
+      <p>Good design belongs in your everyday.<br>Discover objects that make a difference.</p>
+      <div class="intro-actions"><a href="#products" class="btn btn-primary">Discover the collection <span aria-hidden="true">↗</span></a><a href="#philosophy" class="perspective-link">A new perspective</a></div>
+      <div class="hero-index"><span>01 / THE ART OF EVERYDAY</span><span>SCROLL TO EXPLORE ↓</span></div>
     </div>
-  </div>
-</section>
+    <figure class="hero-visual" appReveal>
+      <img src="/images/everyday-headphones.webp" alt="Sculptural silver and black headphones, an exploration of everyday design" width="1536" height="1024" fetchpriority="high">
+      <figcaption><span>FORM. FUNCTION. FEELING.</span><span>THE DESIGN EDIT — 2026</span></figcaption>
+      <span class="image-corner" aria-hidden="true">↗</span>
+    </figure>
+  </section>
+  <section class="collections-section" id="collections" aria-labelledby="collections-heading">
+    <div class="section-heading" appReveal><div><span class="eyebrow">FIND YOUR EVERYDAY</span><h2 id="collections-heading">A place for everything.</h2></div><a href="#products" class="text-link">Explore all <span aria-hidden="true">↗</span></a></div>
+    <div class="collection-grid">
+      <a routerLink="/" [queryParams]="{ category: 'Electronics' }" fragment="products" class="collection-card" appReveal>
+        <div class="collection-image"><img src="/images/everyday-headphones.webp" alt="Silver headphones" loading="lazy" width="600" height="480"><span class="round-arrow" aria-hidden="true">↗</span></div>
+        <div class="collection-copy"><div><h3>In your element.</h3><p>Technology that fits your life.</p></div><span class="eyebrow">01 — TECH</span></div>
+      </a>
+      <a routerLink="/" [queryParams]="{ category: 'Home' }" fragment="products" class="collection-card" appReveal>
+        <div class="collection-image"><img src="/images/space.jpg" alt="A considered living space with a sculptural chair" loading="lazy" width="600" height="480"><span class="round-arrow" aria-hidden="true">↗</span></div>
+        <div class="collection-copy"><div><h3>Room to breathe.</h3><p>Make your space your own.</p></div><span class="eyebrow">02 — HOME</span></div>
+      </a>
+      <a routerLink="/" [queryParams]="{ category: 'Fashion' }" fragment="products" class="collection-card" appReveal>
+        <div class="collection-image"><img src="/images/essentials.jpg" alt="A minimal wristwatch with considered details" loading="lazy" width="600" height="480"><span class="round-arrow" aria-hidden="true">↗</span></div>
+        <div class="collection-copy"><div><h3>Simply you.</h3><p>Essentials. Without the excess.</p></div><span class="eyebrow">03 — STYLE</span></div>
+      </a>
+    </div>
+  </section>
+</div>

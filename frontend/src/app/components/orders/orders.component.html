@@ -10,7 +10,7 @@
     @if (!auth.isAuthenticated()) {
       <!-- Unauthenticated View -->
       <div class="auth-required-card">
-        <div class="lock-icon">🔒</div>
+        <div class="lock-icon">⊕</div>
         <h2>Sign in to see your orders</h2>
         <p>See your purchases, view invoices, and manage eligible orders.</p>
         <button class="btn btn-buy btn-lg" (click)="isAuthModalOpen.set(true)">
@@ -81,7 +81,7 @@
             </div>
           } @else if (filteredOrders().length === 0) {
             <div class="empty-orders-card">
-              <div class="empty-icon">📦</div>
+              <div class="empty-icon">□</div>
               <h3>No orders recorded</h3>
               <p>Your purchases and invoices will appear here after you place an order.</p>
               <a routerLink="/" class="btn btn-primary">Browse Marketplace</a>

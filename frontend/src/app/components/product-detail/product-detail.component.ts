@@ -51,6 +51,12 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  onImageError(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    image.onerror = null;
+    image.src = "/product-placeholder.svg";
+  }
+
   incrementQty(): void {
     const prod = this.product();
     if (!prod) return;

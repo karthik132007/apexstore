@@ -19,7 +19,7 @@
 }
 
 .crumb-sep {
-  color: #cbd5e1;
+  color: #d4d4d4;
 }
 
 .crumb-active {
@@ -89,7 +89,7 @@
   height: 44px;
   background: var(--brand-midnight);
   color: var(--brand-accent);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -253,7 +253,7 @@
 
 .status-pill.pending {
   background: var(--brand-accent-light);
-  color: #b45309;
+  color: #626262;
 }
 
 .status-pill.cancelled {
@@ -262,8 +262,8 @@
 }
 
 .status-pill.failed {
-  background: #f1f5f9;
-  color: #64748b;
+  background: #f4f4f4;
+  color: #727272;
 }
 
 /* Order Card Body */
@@ -348,11 +348,11 @@
 }
 .invoice-action-btn:hover {
   background: var(--brand-accent-light);
-  color: #0b0f19;
+  color: #0f0f0f;
 }
 
 .cancel-action-btn {
-  border-color: #fca5a5;
+  border-color: #b7b7b7;
   color: var(--brand-crimson);
 }
 .cancel-action-btn:hover {
@@ -402,3 +402,7 @@
     width: 100%;
   }
 }
+
+.auth-required-card { border: 0; padding-block: 80px; }
+.auth-required-card h2 { font-size: 36px; font-weight: 400; letter-spacing: -1.3px; }
+.page-heading { font-size: 36px; font-weight: 400; letter-spacing: -1.3px; }

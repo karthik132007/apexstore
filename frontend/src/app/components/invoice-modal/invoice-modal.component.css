@@ -25,7 +25,7 @@
 
 .soap-badge {
   background: var(--brand-accent-light);
-  color: #92400e;
+  color: #4e4e4e;
   font-size: 10.5px;
   font-weight: 800;
   padding: 2px 8px;
@@ -43,13 +43,13 @@
 .printable-invoice {
   padding: 34px 38px;
   background: #ffffff;
-  color: #0f172a;
+  color: #171717;
 }
 
 .invoice-bill-header {
   display: flex;
   justify-content: space-between;
-  border-bottom: 2px solid #0f172a;
+  border-bottom: 2px solid #171717;
   padding-bottom: 18px;
   margin-bottom: 20px;
 }
@@ -57,25 +57,25 @@
 .bill-logo {
   font-size: 24px;
   font-weight: 900;
-  color: #0f172a;
+  color: #171717;
   letter-spacing: -0.5px;
 }
 
 .bill-tagline {
   font-size: 12.5px;
   font-weight: 600;
-  color: #334155;
+  color: #3f3f3f;
 }
 
 .bill-address {
   font-size: 11px;
-  color: #64748b;
+  color: #727272;
   margin-top: 3px;
 }
 
 .bill-cin {
   font-size: 10px;
-  color: #94a3b8;
+  color: #a1a1a1;
   margin-top: 3px;
 }
 
@@ -86,13 +86,13 @@
 .doc-title {
   font-size: 15px;
   font-weight: 800;
-  color: #0f172a;
+  color: #171717;
   letter-spacing: 0.3px;
 }
 
 .doc-orig {
   font-size: 11px;
-  color: #64748b;
+  color: #727272;
 }
 
 /* Meta Grid */
@@ -121,13 +121,13 @@
 
 .meta-val {
   font-size: 13px;
-  color: #1e293b;
+  color: #282828;
 }
 
 .addr-text {
   margin-top: 4px;
   line-height: 1.45;
-  color: #475569;
+  color: #535353;
 }
 
 .font-mono {
@@ -152,7 +152,7 @@
   padding: 10px 12px;
   text-align: left;
   font-weight: 700;
-  color: #334155;
+  color: #3f3f3f;
   font-size: 12px;
 }
 
@@ -177,11 +177,11 @@
 
 .item-name-bold {
   font-weight: 700;
-  color: #0f172a;
+  color: #171717;
 }
 
 .item-pid {
-  color: #94a3b8;
+  color: #a1a1a1;
   margin-top: 2px;
   font-size: 10.5px;
 }
@@ -200,7 +200,7 @@
 .total-val-cell {
   font-weight: 900;
   font-size: 16px;
-  color: #0f172a;
+  color: #171717;
   text-align: right;
   background: var(--surface-subtle);
 }
@@ -218,19 +218,19 @@
 .disclaimer {
   max-width: 500px;
   font-size: 11px;
-  color: #64748b;
+  color: #727272;
   line-height: 1.5;
 }
 
 .sign-block {
   text-align: center;
   font-size: 11px;
-  color: #64748b;
+  color: #727272;
 }
 
 .sign-line {
   width: 150px;
-  border-bottom: 1px solid #475569;
+  border-bottom: 1px solid #535353;
   margin-bottom: 6px;
 }
 
