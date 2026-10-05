@@ -1,0 +1,42 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          httpclient:
+            connect-timeout: 3000
+            response-timeout: 40s
+          default-filters:
+            - RemoveRequestHeader=X-Service-Key
+          globalcors:
+            add-to-simple-url-handler-mapping: true
+            cors-configurations:
+              '[/**]':
+                allowedOrigins:
+                  - "${FRONTEND_ORIGIN:http://localhost:4200}"
+                allowedMethods: [GET, POST, PUT, PATCH, DELETE, OPTIONS]
+                allowedHeaders: [Authorization, Content-Type, Idempotency-Key, X-Trace-Id]
+                exposedHeaders: [X-Trace-Id, Location]
+          routes:
+            - id: users
+              uri: ${USER_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/auth/**,/api/users/**
+            - id: products
+              uri: ${PRODUCT_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/products/**,/api/seller/products/**,/api/admin/products/**
+            - id: orders
+              uri: ${ORDER_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/orders/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+

@@ -1,0 +1,430 @@
+<div class="seller-page">
+  <div class="fk-container">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs-bar">
+      <a routerLink="/" class="crumb-link">Home</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-active">{{ auth.isAdmin() ? 'Admin' : 'Your shop' }}</span>
+    </div>
+
+    @if (!auth.isAuthenticated()) {
+      <div class="auth-required-card">
+        <div class="lock-icon">🏪</div>
+        <h2>Sign in to access {{ auth.isAdmin() ? 'Admin' : 'Your shop' }}</h2>
+        <p>Add products, update prices, and keep your stock up to date.</p>
+        <button class="btn btn-buy btn-lg" (click)="isAuthModalOpen.set(true)">
+          Sign In Now
+        </button>
+      </div>
+    } @else if (!auth.isSeller() && !auth.isAdmin()) {
+      <!-- Customer wants to become seller -->
+      <div class="become-seller-hero">
+        <div class="seller-hero-content">
+          <span class="hero-tag">SELL ON APEXMART</span>
+          <h1>Give your products a place to shine</h1>
+          <p>
+            Create a listing, add a photo, and set your price. Manage your products and stock in one place.
+          </p>
+          <div class="seller-benefits">
+            <div class="benefit-item">Add your products</div>
+            <div class="benefit-item">Set your prices</div>
+            <div class="benefit-item">Manage your stock</div>
+          </div>
+          <button class="btn btn-cart btn-lg start-selling-btn" (click)="becomeSeller()">
+            Start selling
+          </button>
+        </div>
+      </div>
+    } @else {
+      <!-- Seller / Admin Portal -->
+      <div class="portal-card">
+        <!-- Portal Header -->
+        <div class="portal-header">
+          <div class="portal-header-left">
+            <h1 class="portal-title">
+              {{ auth.isAdmin() ? 'Manage products' : 'Your shop' }}
+            </h1>
+            <div class="portal-sub">
+              <span>Account: <strong>{{ auth.currentUser()?.email }}</strong></span>
+              <span class="role-badge" [ngClass]="auth.isAdmin() ? 'admin' : 'seller'">
+                {{ auth.isAdmin() ? 'ADMIN' : 'SELLER' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="portal-nav-tabs">
+            <button 
+              type="button" 
+              class="tab-link" 
+              [class.active]="activeTab() === 'LISTINGS'" 
+              (click)="activeTab.set('LISTINGS')">
+              📦 {{ auth.isAdmin() ? 'All Platform Listings' : 'My Inventory' }} ({{ products().length }})
+            </button>
+            <button 
+              type="button" 
+              class="tab-link" 
+              [class.active]="activeTab() === 'ADD_PRODUCT'" 
+              (click)="activeTab.set('ADD_PRODUCT')">
+              ➕ New Listing
+            </button>
+          </div>
+        </div>
+
+        @if (activeTab() === 'LISTINGS') {
+          <!-- Listings Tab -->
+          <div class="listings-tab-body">
+            @if (isLoading()) {
+              <div class="tab-loading">
+                <div class="spinner-large"></div>
+                <p>Loading inventory records...</p>
+              </div>
+            } @else if (products().length === 0) {
+              <div class="tab-empty">
+                <h3>No active listings</h3>
+                <p>Add your first product to get started.</p>
+                <button class="btn btn-primary" (click)="activeTab.set('ADD_PRODUCT')">
+                  Add First Product
+                </button>
+              </div>
+            } @else {
+              <!-- Listings Table -->
+              <div class="table-responsive">
+                <table class="inventory-table">
+                  <thead>
+                    <tr>
+                      <th>Listing Item</th>
+                      <th>Category</th>
+                      <th>Price</th>
+                      <th class="text-center">Stock on Hand</th>
+                      <th class="text-center">Reserved</th>
+                      <th class="text-center">Available</th>
+                      <th>Status</th>
+                      <th class="text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (p of products(); track p.id) {
+                      <tr>
+                        <!-- Product Info -->
+                        <td>
+                          <div class="table-product-cell">
+                            <img [src]="p.imageUrl || '/product-placeholder.svg'" [alt]="p.name" class="table-thumb">
+                            <div>
+                              <strong class="table-pname">{{ p.name }}</strong>
+                              <div class="table-sku font-mono">SKU: {{ p.sku }}</div>
+                              @if (auth.isAdmin()) {
+                                <div class="table-seller font-mono">Merchant: {{ p.sellerId }}</div>
+                              }
+                            </div>
+                          </div>
+                        </td>
+
+                        <td><span class="category-tag">{{ p.category }}</span></td>
+                        <td><strong>₹{{ p.price | number:'1.2-2' }}</strong></td>
+                        
+                        <!-- Stock on Hand -->
+                        <td class="text-center">
+                          <span class="stock-num">{{ p.stockOnHand }}</span>
+                        </td>
+
+                        <!-- Reserved -->
+                        <td class="text-center">
+                          <span class="reserved-num">{{ p.reserved }}</span>
+                        </td>
+
+                        <!-- Available -->
+                        <td class="text-center">
+                          <strong [class.out]="p.availableStock <= 0" class="avail-num">
+                            {{ p.availableStock }}
+                          </strong>
+                        </td>
+
+                        <!-- Status -->
+                        <td>
+                          <span class="status-badge" [class.active]="p.active" [class.inactive]="!p.active">
+                            {{ p.active ? 'Active' : 'Deactivated' }}
+                          </span>
+                        </td>
+
+                        <!-- Actions -->
+                        <td class="text-right">
+                          <div class="actions-group">
+                            <button 
+                              type="button" 
+                              class="btn btn-outline btn-sm action-btn stock-adjust-btn" 
+                              (click)="openStockModal(p)"
+                              title="Update stock on hand">
+                              Update stock
+                            </button>
+                            <button 
+                              type="button" 
+                              class="btn btn-outline btn-sm action-btn" 
+                              (click)="openEditModal(p)"
+                              title="Edit listing details">
+                              Edit
+                            </button>
+                            @if (p.active) {
+                              <button 
+                                type="button" 
+                                class="btn btn-outline btn-sm action-btn delete-btn" 
+                                (click)="deactivateProduct(p)"
+                                title="Deactivate listing">
+                                Deactivate
+                              </button>
+                            }
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        } @else {
+          <!-- Add New Listing Form -->
+          <div class="add-tab-body">
+            <h2 class="form-section-title">Add a product</h2>
+            <p class="form-section-sub">
+              Add the details shoppers need to choose your product.
+            </p>
+
+            <form (ngSubmit)="createProduct()" class="create-form">
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label class="form-label" for="prod-sku">Product code (SKU)</label>
+                  <input 
+                    id="prod-sku"
+                    type="text" 
+                    class="form-control" 
+                    placeholder="e.g. APEX-KB-01" 
+                    [(ngModel)]="newSku" 
+                    name="sku" 
+                    required>
+                </div>
+
+                <div class="form-group flex-1">
+                  <label class="form-label" for="prod-cat">Department</label>
+                  <select 
+                    id="prod-cat"
+                    class="form-control" 
+                    [(ngModel)]="newCategory" 
+                    name="category">
+                    @for (cat of categoryOptions; track cat) {
+                      <option [value]="cat">{{ cat }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="prod-name">Product Name</label>
+                <input 
+                  id="prod-name"
+                  type="text" 
+                  class="form-control" 
+                  placeholder="e.g. Mechanical Studio Keyboard - Gateron Yellow Switches" 
+                  [(ngModel)]="newName" 
+                  name="name" 
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="prod-desc">Description & Features</label>
+                <textarea 
+                  id="prod-desc"
+                  class="form-control" 
+                  rows="3" 
+                  placeholder="Provide technical specifications and warranty details" 
+                  [(ngModel)]="newDescription" 
+                  name="description" 
+                  required>
+                </textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label class="form-label" for="prod-price">Listed Price (INR)</label>
+                  <input 
+                    id="prod-price"
+                    type="number" 
+                    class="form-control" 
+                    min="1" 
+                    step="0.01" 
+                    [(ngModel)]="newPrice" 
+                    name="price" 
+                    required>
+                </div>
+
+                <div class="form-group flex-1">
+                  <label class="form-label" for="prod-stock">Initial Stock on Hand</label>
+                  <input 
+                    id="prod-stock"
+                    type="number" 
+                    class="form-control" 
+                    min="0" 
+                    [(ngModel)]="newInitialStock" 
+                    name="stock" 
+                    required>
+                  <small class="help-text">How many units are ready to sell?</small>
+                </div>
+              </div>
+
+              <!-- Image URL & Quick Sample Pickers -->
+              <div class="form-group">
+                <label class="form-label" for="prod-img">Product Image URL</label>
+                <input 
+                  id="prod-img"
+                  type="url" 
+                  class="form-control" 
+                  [(ngModel)]="newImageUrl" 
+                  name="imageUrl" 
+                  required>
+                
+                <div class="quick-img-pickers">
+                  <span class="picker-label">Curated Sample Assets:</span>
+                  @for (sample of sampleImages; track sample.label) {
+                    <button 
+                      type="button" 
+                      class="sample-pill" 
+                      (click)="newImageUrl = sample.url">
+                      {{ sample.label }}
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <div class="form-actions-bar">
+                <button 
+                  type="submit" 
+                  class="btn btn-buy btn-lg" 
+                  [disabled]="isCreating()">
+                  @if (isCreating()) {
+                    <span class="spinner"></span> Publishing Listing...
+                  } @else {
+                    Publish to Marketplace
+                  }
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-outline" 
+                  (click)="activeTab.set('LISTINGS')">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Stock Update Modal (PATCH /api/seller/products/{id}/stock) -->
+@if (editingProduct(); as prod) {
+  <div class="modal-backdrop">
+    <div class="modal-box stock-modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Inventory Stock Adjustment</h3>
+        <button class="modal-close-btn" (click)="editingProduct.set(null)">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="stock-prod-preview">
+          <img [src]="prod.imageUrl" [alt]="prod.name" class="stock-thumb">
+          <div>
+            <strong>{{ prod.name }}</strong>
+            <div class="font-mono">SKU: {{ prod.sku }}</div>
+          </div>
+        </div>
+
+        <div class="stock-info-grid">
+          <div>Warehouse Total: <strong>{{ prod.stockOnHand }}</strong></div>
+          <div>Active Reserved: <strong>{{ prod.reserved }}</strong></div>
+          <div>Available for Order: <strong>{{ prod.availableStock }}</strong></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="new-stock-val">New Total Stock on Hand</label>
+          <input 
+            id="new-stock-val"
+            type="number" 
+            class="form-control" 
+            [min]="prod.reserved" 
+            [(ngModel)]="stockToUpdate" 
+            name="stockOnHand">
+          <small class="help-text">
+            Per backend contract, this must be total inventory and cannot be lower than active reservations ({{ prod.reserved }}).
+          </small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="editingProduct.set(null)">Cancel</button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          [disabled]="isUpdatingStock()"
+          (click)="saveStock()">
+          @if (isUpdatingStock()) {
+            <span class="spinner"></span> Adjusting...
+          } @else {
+            Save stock
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Edit Details Modal (PUT /api/seller/products/{id}) -->
+@if (editModalProduct(); as editProd) {
+  <div class="modal-backdrop">
+    <div class="modal-box edit-modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit product</h3>
+        <button class="modal-close-btn" (click)="editModalProduct.set(null)">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="edit-name">Product Name</label>
+          <input id="edit-name" type="text" class="form-control" [(ngModel)]="editProd.name">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="edit-desc">Description</label>
+          <textarea id="edit-desc" class="form-control" rows="3" [(ngModel)]="editProd.description"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label class="form-label" for="edit-cat">Department</label>
+            <select id="edit-cat" class="form-control" [(ngModel)]="editProd.category">
+              @for (cat of categoryOptions; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label class="form-label" for="edit-price">Price (INR)</label>
+            <input id="edit-price" type="number" class="form-control" [(ngModel)]="editProd.price">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="edit-img">Image URL</label>
+          <input id="edit-img" type="url" class="form-control" [(ngModel)]="editProd.imageUrl">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="editModalProduct.set(null)">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="saveProductDetails()">
+          Save Changes (PUT)
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Auth Modal -->
+@if (isAuthModalOpen()) {
+  <app-auth-modal (close)="isAuthModalOpen.set(false); ngOnInit()"></app-auth-modal>
+}

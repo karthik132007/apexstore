@@ -1,0 +1,30 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: ${PRODUCT_DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 4
+      minimum-idle: 1
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.CockroachDialect
+  flyway:
+    enabled: true
+app:
+  jwt-secret: ${JWT_SECRET}
+  internal-key: ${INTERNAL_API_KEY}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+

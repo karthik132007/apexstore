@@ -1,0 +1,255 @@
+.apex-auth-card {
+  display: flex;
+  width: 740px;
+  max-width: 95vw;
+  min-height: 520px;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  animation: modalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-size: 18px;
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.15s;
+}
+
+.close-btn:hover {
+  background: var(--surface-muted);
+  color: var(--text-primary);
+}
+
+/* Left Obsidian Panel */
+.auth-sidebar {
+  width: 42%;
+  background: radial-gradient(ellipse at top left, #1e293b 0%, #0f172a 65%, #020617 100%);
+  color: #ffffff;
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-tag {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--brand-accent);
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.sidebar-content h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+}
+
+.sidebar-content p {
+  font-size: 13.5px;
+  color: #cbd5e1;
+  line-height: 1.55;
+}
+
+.sidebar-graphic {
+  display: flex;
+  justify-content: center;
+  opacity: 0.7;
+}
+
+/* Right Form Panel */
+.auth-main {
+  width: 58%;
+  padding: 34px 38px;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 18px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  color: var(--brand-midnight);
+  border-bottom-color: var(--brand-accent);
+  font-weight: 700;
+}
+
+.demo-helpers {
+  background: var(--surface-subtle);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 18px;
+}
+
+.demo-label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.demo-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 5px 12px;
+  background: #ffffff;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip:hover {
+  background: var(--brand-midnight);
+  color: #ffffff;
+  border-color: var(--brand-midnight);
+}
+
+.chip-admin {
+  border-color: #fde68a;
+  background: #fefce8;
+  color: #b45309;
+}
+
+.chip-admin:hover {
+  background: var(--brand-accent);
+  color: #0b0f19;
+  border-color: var(--brand-accent);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-error-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--brand-crimson-light);
+  border: 1px solid #fca5a5;
+  color: var(--brand-crimson);
+  padding: 9px 13px;
+  border-radius: 4px;
+  font-size: 12.5px;
+  margin-bottom: 14px;
+}
+
+.terms-text {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 18px;
+}
+
+.terms-text a {
+  color: var(--brand-accent-hover);
+  text-decoration: underline;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 14.5px;
+}
+
+.switch-mode-box {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+.switch-link {
+  color: var(--brand-accent-hover);
+  font-weight: 700;
+  margin-left: 6px;
+  text-decoration: underline;
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 0.6s linear infinite;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 650px) {
+  .apex-auth-card {
+    flex-direction: column;
+  }
+  .auth-sidebar {
+    width: 100%;
+    padding: 24px;
+  }
+  .sidebar-graphic {
+    display: none;
+  }
+  .auth-main {
+    width: 100%;
+    padding: 24px;
+  }
+}

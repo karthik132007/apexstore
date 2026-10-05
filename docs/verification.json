@@ -1,0 +1,149 @@
+{
+  "verifiedAt": "2026-10-04T13:54:49.0741920Z",
+  "gateway": "http://localhost:8080",
+  "checks": [
+    {
+      "check": "Seller registration and role enablement",
+      "passed": true
+    },
+    {
+      "check": "Seller creates listing and sets inventory",
+      "passed": true
+    },
+    {
+      "check": "Seller cannot access admin product creation",
+      "passed": true
+    },
+    {
+      "check": "Customer cannot edit seller listing",
+      "passed": true
+    },
+    {
+      "check": "Public catalogue pagination and sorting",
+      "passed": true
+    },
+    {
+      "check": "Admin can create listings",
+      "passed": true
+    },
+    {
+      "check": "Admin can edit seller listings",
+      "passed": true
+    },
+    {
+      "check": "Order confirms with authoritative product prices",
+      "passed": true
+    },
+    {
+      "check": "Repeated checkout returns the same order",
+      "passed": true
+    },
+    {
+      "check": "Stock deducted exactly once",
+      "passed": true
+    },
+    {
+      "check": "Other users cannot read buyer orders",
+      "passed": true
+    },
+    {
+      "check": "SOAP invoice generation is repeatable without duplicates",
+      "passed": true
+    },
+    {
+      "check": "Issued invoice protects order from cancellation",
+      "passed": true
+    },
+    {
+      "check": "Cancellation restores inventory exactly once",
+      "passed": true
+    },
+    {
+      "check": "Insufficient stock rejects purchase",
+      "passed": true
+    },
+    {
+      "check": "Invalid page size produces validation error",
+      "passed": true
+    }
+  ],
+  "product": {
+    "id": "bfa0ecb3-fbe8-4308-b873-347fb4ef3d07",
+    "sellerId": "dab8e40c-e605-4e75-b2cf-32a42ec7f2c7",
+    "sku": "DEMO-0fa840917c5a",
+    "name": "Academic Demo Keyboard - Admin Reviewed",
+    "description": "Created by the backend verification script",
+    "category": "Electronics",
+    "price": 499.5,
+    "currency": "INR",
+    "imageUrl": "https://example.com/keyboard.png",
+    "active": true,
+    "stockOnHand": 8,
+    "reserved": 0,
+    "availableStock": 8
+  },
+  "confirmedOrder": {
+    "id": "81f3f22e-c4da-427b-b853-1807bbd6c11f",
+    "buyerId": "645c22cc-f264-4e57-a9ff-0ce7a48e8387",
+    "status": "CONFIRMED",
+    "customerName": "Demo Customer",
+    "customerEmail": "buyer-0fa840917c5a@example.test",
+    "address": "Academic demonstration address",
+    "currency": "INR",
+    "total": 999.0,
+    "createdAt": "2026-10-04T13:54:27.875492Z",
+    "invoiceRequested": false,
+    "items": [
+      {
+        "productId": "bfa0ecb3-fbe8-4308-b873-347fb4ef3d07",
+        "sellerId": "dab8e40c-e605-4e75-b2cf-32a42ec7f2c7",
+        "name": "Academic Demo Keyboard - Admin Reviewed",
+        "quantity": 2,
+        "unitPrice": 499.5,
+        "subtotal": 999.0
+      }
+    ]
+  },
+  "invoice": {
+    "id": "18239709-8a40-4269-bf99-e3dbee2a5ea4",
+    "invoiceNumber": "INV-18239709-8a40-4269-bf99-e3dbee2a5ea4",
+    "orderId": "81f3f22e-c4da-427b-b853-1807bbd6c11f",
+    "customerName": "Demo Customer",
+    "customerEmail": "buyer-0fa840917c5a@example.test",
+    "address": "Academic demonstration address",
+    "currency": "INR",
+    "total": 999.0,
+    "issuedAt": "2026-10-04T13:54:34.157204500Z",
+    "items": [
+      {
+        "productId": "bfa0ecb3-fbe8-4308-b873-347fb4ef3d07",
+        "sellerId": "dab8e40c-e605-4e75-b2cf-32a42ec7f2c7",
+        "name": "Academic Demo Keyboard - Admin Reviewed",
+        "quantity": 2,
+        "unitPrice": 499.5
+      }
+    ]
+  },
+  "cancelledOrder": {
+    "id": "453d1220-9661-4761-81ef-f5cc20b0701f",
+    "buyerId": "645c22cc-f264-4e57-a9ff-0ce7a48e8387",
+    "status": "CANCELLED",
+    "customerName": "Demo Customer",
+    "customerEmail": "buyer-0fa840917c5a@example.test",
+    "address": "Academic demonstration address",
+    "currency": "INR",
+    "total": 999.0,
+    "createdAt": "2026-10-04T13:54:37.56391Z",
+    "invoiceRequested": false,
+    "items": [
+      {
+        "productId": "bfa0ecb3-fbe8-4308-b873-347fb4ef3d07",
+        "sellerId": "dab8e40c-e605-4e75-b2cf-32a42ec7f2c7",
+        "name": "Academic Demo Keyboard - Admin Reviewed",
+        "quantity": 2,
+        "unitPrice": 499.5,
+        "subtotal": 999.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
+
+@Component({
+  selector: 'app-header',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
+})
+export class HeaderComponent {
+  readonly auth = inject(AuthService);
+  readonly cart = inject(CartService);
+  private readonly router = inject(Router);
+
+  @Output() openAuthModal = new EventEmitter<void>();
+  @Output() searchSubmitted = new EventEmitter<{ query: string; category: string }>();
+
+  searchQuery = signal('');
+  selectedCategory = signal('All');
+  isAccountMenuOpen = signal(false);
+
+  readonly categories = [
+    'All',
+    'Electronics',
+    'Fashion',
+    'Appliances',
+    'Home',
+    'Books'
+  ];
+
+  readonly subCategories = [
+    { name: 'All Products', category: 'All' },
+    { name: 'Electronics', category: 'Electronics' },
+    { name: 'Fashion', category: 'Fashion' },
+    { name: 'Home & Living', category: 'Home' },
+    { name: 'Appliances', category: 'Appliances' },
+    { name: 'Books', category: 'Books' }
+  ];
+
+  toggleAccountMenu(): void {
+    this.isAccountMenuOpen.update(v => !v);
+  }
+
+  closeAccountMenu(): void {
+    this.isAccountMenuOpen.set(false);
+  }
+
+  onSearch(): void {
+    const q = this.searchQuery().trim();
+    const cat = this.selectedCategory();
+    this.searchSubmitted.emit({ query: q, category: cat });
+    this.router.navigate(['/'], {
+      queryParams: {
+        search: q || null,
+        category: cat !== 'All' ? cat : null,
+        page: 0
+      },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  selectSubCategory(cat: string): void {
+    this.selectedCategory.set(cat);
+    this.router.navigate(['/'], {
+      queryParams: {
+        category: cat !== 'All' ? cat : null,
+        page: 0
+      }
+    });
+  }
+
+  handleBecomeSeller(): void {
+    if (!this.auth.isAuthenticated()) {
+      this.openAuthModal.emit();
+      return;
+    }
+    this.auth.becomeSeller().subscribe();
+  }
+
+  handleLogout(): void {
+    this.auth.logout();
+    this.isAccountMenuOpen.set(false);
+    this.router.navigate(['/']);
+  }
+}

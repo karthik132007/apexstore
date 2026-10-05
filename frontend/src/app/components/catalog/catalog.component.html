@@ -1,0 +1,262 @@
+<div class="catalog-page">
+  <!-- Top Editorial Banner Strip -->
+  @if (!searchKeyword() && currentPage() === 0 && activeCategory() === 'All') {
+    <app-banner-strip></app-banner-strip>
+  }
+
+  <div class="fk-container">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs-bar">
+      <a routerLink="/" class="crumb-link">Home</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-active">{{ activeCategory() }}</span>
+      @if (searchKeyword()) {
+        <span class="crumb-sep">/</span>
+        <span class="crumb-query">Search: "{{ searchKeyword() }}"</span>
+      }
+    </div>
+
+    <!-- Main 2-Column Catalog Layout -->
+    <div class="catalog-layout" id="products">
+      <button type="button" class="mobile-filter-toggle btn btn-outline" [attr.aria-expanded]="filtersOpen()" aria-controls="catalog-filters" (click)="filtersOpen.set(!filtersOpen())">
+        {{ filtersOpen() ? 'Hide filters' : 'Filter products' }}
+      </button>
+      <!-- Left Sidebar: Filters Rail -->
+      <aside class="filters-sidebar" id="catalog-filters" [class.mobile-open]="filtersOpen()">
+        <div class="filters-header">
+          <div class="filters-title-group">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            <span class="filters-title">Shop by</span>
+          </div>
+          <button type="button" class="clear-all-btn" (click)="clearFilters()">Reset</button>
+        </div>
+
+        <!-- Categories Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">CATEGORIES</div>
+          <ul class="filter-category-list">
+            @for (cat of categoriesList; track cat) {
+              <li class="filter-category-item">
+                <button 
+                  type="button" 
+                  class="category-btn" 
+                  [class.active]="activeCategory() === cat"
+                  (click)="onCategorySelect(cat)">
+                  <span class="cat-indicator"></span>
+                  <span>{{ cat }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <!-- Price Range Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">PRICE ON THIS PAGE</div>
+          <div class="price-quick-pills">
+            <button 
+              type="button" 
+              class="price-pill" 
+              [class.active]="maxPrice() === 500" 
+              (click)="setPriceRange(null, 500)">
+              Under ₹500
+            </button>
+            <button 
+              type="button" 
+              class="price-pill" 
+              [class.active]="minPrice() === 500 && maxPrice() === 2000" 
+              (click)="setPriceRange(500, 2000)">
+              ₹500 — ₹2,000
+            </button>
+            <button 
+              type="button" 
+              class="price-pill" 
+              [class.active]="minPrice() === 2000" 
+              (click)="setPriceRange(2000, null)">
+              ₹2,000 & Above
+            </button>
+          </div>
+
+          <div class="price-inputs-row">
+            <input 
+              type="number" 
+              class="price-input" 
+              placeholder="Min" 
+              [ngModel]="minPrice()" 
+              (ngModelChange)="minPrice.set($event)">
+            <span class="price-dash">—</span>
+            <input 
+              type="number" 
+              class="price-input" 
+              placeholder="Max" 
+              [ngModel]="maxPrice()" 
+              (ngModelChange)="maxPrice.set($event)">
+          </div>
+        </div>
+
+        <!-- Availability Section -->
+        <div class="filter-section">
+          <div class="filter-section-title">AVAILABILITY ON THIS PAGE</div>
+          <label class="filter-checkbox-label">
+            <input 
+              type="checkbox" 
+              [checked]="inStockOnly()" 
+              (change)="inStockOnly.set(!inStockOnly())">
+            <span>In Stock Only</span>
+          </label>
+        </div>
+
+      </aside>
+
+      <!-- Right Column: Products & Sort Bar -->
+      <main class="products-main">
+        <!-- Results & Sort Header Strip -->
+        <div class="results-header-strip">
+          <div class="results-count-text">
+            <span>Showing</span>
+            <strong>{{ filteredProducts().length }}</strong>
+            <span>of</span>
+            <strong>{{ totalElements() }}</strong>
+            <span>products</span>
+            @if (activeCategory() !== 'All') {
+              <span>in <em>{{ activeCategory() }}</em></span>
+            }
+          </div>
+
+          <div class="sort-bar">
+            <span class="sort-label">Sort:</span>
+            <div class="sort-tabs">
+              @for (opt of sortOptions; track opt.label) {
+                <button 
+                  type="button" 
+                  class="sort-tab-btn" 
+                  [class.active]="selectedSort() === opt.value"
+                  (click)="onSortChange(opt.value)">
+                  {{ opt.label }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        @if (isLoading()) {
+          <div class="loading-container">
+            <div class="spinner-large"></div>
+            <p>Loading products…</p>
+          </div>
+        } @else if (loadError()) {
+          <div class="empty-catalog-state" role="status">
+            <h3>Products are temporarily unavailable</h3>
+            <p>Please try again in a moment.</p>
+            <button class="btn btn-primary" (click)="loadProducts()">Try again</button>
+          </div>
+        } @else if (filteredProducts().length === 0) {
+          <!-- Empty State -->
+          <div class="empty-catalog-state">
+            <div class="empty-icon">🔍</div>
+            <h3>No matching products</h3>
+            <p>Try another search or clear your filters.</p>
+            <button class="btn btn-primary" (click)="clearFilters()">Reset All Filters</button>
+          </div>
+        } @else {
+          <!-- Product Grid -->
+          <div class="product-grid">
+            @for (product of filteredProducts(); track product.id) {
+              <article class="product-card">
+                <!-- Card Media -->
+                <div class="card-media">
+                  <a [routerLink]="['/product', product.id]" class="product-image-link">
+                  <img 
+                    [src]="product.imageUrl || '/product-placeholder.svg'"
+                    (error)="onImageError($event)" 
+                    [alt]="product.name" 
+                    class="product-image" 
+                    loading="lazy">
+                  </a>
+                  
+                </div>
+
+                <!-- Card Content -->
+                <div class="card-body">
+                  <div class="product-category-row">
+                    <span class="product-category-tag">{{ product.category }}</span>
+                    
+                  </div>
+                  
+                  <h2 class="product-title"><a [routerLink]="['/product', product.id]">{{ product.name }}</a></h2>
+
+                  <!-- Price -->
+                  <div class="price-row">
+                    <span class="price-current">₹{{ product.price | number:'1.2-2' }}</span>
+
+                  </div>
+
+                  <!-- Stock Status Gauge -->
+                  <div class="stock-status-row">
+                    @if (product.availableStock > 0) {
+                      <span class="stock-badge in-stock">
+                        ● {{ product.availableStock }} available
+                      </span>
+                    } @else {
+                      <span class="stock-badge out-stock">
+                        ● Out of stock
+                      </span>
+                    }
+                  </div>
+
+
+                </div>
+
+                <!-- Card Actions -->
+                <div class="card-actions">
+                  <button 
+                    type="button" 
+                    class="btn btn-cart card-cart-btn" 
+                    [disabled]="product.availableStock <= 0"
+                    (click)="addToCart(product, $event)">
+                    Add to Cart
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn btn-buy card-buy-btn" 
+                    [disabled]="product.availableStock <= 0"
+                    (click)="buyNow(product, $event)">
+                    Buy now
+                  </button>
+                </div>
+              </article>
+            }
+          </div>
+
+          <!-- Pagination Bar -->
+          @if (totalPages() > 1) {
+            <div class="pagination-bar">
+              <button 
+                type="button" 
+                class="btn btn-outline page-nav-btn" 
+                [disabled]="currentPage() === 0"
+                (click)="goToPage(currentPage() - 1)">
+                ← Previous
+              </button>
+
+              <div class="page-indicators">
+                <span>Page <strong>{{ currentPage() + 1 }}</strong> of <strong>{{ totalPages() }}</strong></span>
+              </div>
+
+              <button 
+                type="button" 
+                class="btn btn-outline page-nav-btn" 
+                [disabled]="currentPage() >= totalPages() - 1"
+                (click)="goToPage(currentPage() + 1)">
+                Next →
+              </button>
+            </div>
+          }
+        }
+      </main>
+    </div>
+  </div>
+</div>

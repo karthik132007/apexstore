@@ -1,0 +1,27 @@
+<section class="banner-section" aria-labelledby="shop-heading">
+  <div class="fk-container">
+    <div class="shop-intro">
+      <div class="intro-copy">
+        <span class="intro-eyebrow">A little something for your everyday</span>
+        <h1 id="shop-heading">Good finds.<br>Everyday essentials.</h1>
+        <p>Find something for your desk, your wardrobe, or your home. Take a look around.</p>
+        <a href="#products" class="shop-link">Browse products <span aria-hidden="true">↗</span></a>
+      </div>
+      <nav class="category-edit" aria-label="Shop by category">
+        <span class="category-caption">Where would you like to start?</span>
+        <a routerLink="/" [queryParams]="{ category: 'Electronics' }" class="category-pick">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="6" width="24" height="16" rx="3"/><path d="M12 27h8M16 22v5"/></svg>
+          <span><strong>For your desk</strong><small>Explore electronics</small></span><span aria-hidden="true">↗</span>
+        </a>
+        <a routerLink="/" [queryParams]="{ category: 'Fashion' }" class="category-pick">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="m11 5-7 4 3 7 4-2v13h10V14l4 2 3-7-7-4c0 5-10 5-10 0Z"/></svg>
+          <span><strong>For your wardrobe</strong><small>Explore fashion</small></span><span aria-hidden="true">↗</span>
+        </a>
+        <a routerLink="/" [queryParams]="{ category: 'Home' }" class="category-pick">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="m4 15 12-10 12 10M8 12v15h16V12M13 27v-9h6v9"/></svg>
+          <span><strong>For your space</strong><small>Explore home</small></span><span aria-hidden="true">↗</span>
+        </a>
+      </nav>
+    </div>
+  </div>
+</section>

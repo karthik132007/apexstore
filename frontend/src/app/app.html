@@ -1,0 +1,20 @@
+<div class="app-shell">
+  <!-- Classic Header -->
+  <app-header (openAuthModal)="openAuthModal()"></app-header>
+
+  <!-- Main View Container -->
+  <main class="app-main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Professional Footer -->
+  <app-footer></app-footer>
+
+  <!-- Live Toast Notifications -->
+  <app-toast></app-toast>
+
+  <!-- Auth Dialog (Login & Register) -->
+  @if (isAuthModalOpen()) {
+    <app-auth-modal (close)="closeAuthModal()"></app-auth-modal>
+  }
+</div>

@@ -1,0 +1,32 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: ${ORDER_DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 4
+      minimum-idle: 1
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.CockroachDialect
+  flyway:
+    enabled: true
+app:
+  jwt-secret: ${JWT_SECRET}
+  internal-key: ${INTERNAL_API_KEY}
+
+  product-url: ${PRODUCT_SERVICE_URL:http://localhost:8082}
+  invoice-url: ${INVOICE_SERVICE_URL:http://localhost:8084}
+  recovery-delay: 15000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+

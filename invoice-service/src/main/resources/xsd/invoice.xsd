@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:ecom:invoice:v1" targetNamespace="urn:ecom:invoice:v1" elementFormDefault="qualified">
+  <xs:complexType name="Items"><xs:sequence><xs:element name="item" minOccurs="1" maxOccurs="50"><xs:complexType><xs:sequence>
+    <xs:element name="productId" type="xs:string"/><xs:element name="sellerId" type="xs:string"/><xs:element name="name" type="xs:string"/><xs:element name="quantity" type="xs:positiveInteger"/><xs:element name="unitPrice" type="xs:decimal"/>
+  </xs:sequence></xs:complexType></xs:element></xs:sequence></xs:complexType>
+  <xs:element name="generateInvoiceRequest"><xs:complexType><xs:sequence>
+    <xs:element name="orderId" type="xs:string"/><xs:element name="customerName" type="xs:string"/><xs:element name="customerEmail" type="xs:string"/><xs:element name="address" type="xs:string"/><xs:element name="currency" type="xs:string"/><xs:element name="items" type="tns:Items"/>
+  </xs:sequence></xs:complexType></xs:element>
+  <xs:element name="generateInvoiceResponse"><xs:complexType><xs:sequence>
+    <xs:element name="id" type="xs:string"/><xs:element name="invoiceNumber" type="xs:string"/><xs:element name="orderId" type="xs:string"/><xs:element name="customerName" type="xs:string"/><xs:element name="customerEmail" type="xs:string"/><xs:element name="address" type="xs:string"/><xs:element name="currency" type="xs:string"/><xs:element name="total" type="xs:decimal"/><xs:element name="issuedAt" type="xs:dateTime"/><xs:element name="items" type="tns:Items"/>
+  </xs:sequence></xs:complexType></xs:element>
+</xs:schema>
