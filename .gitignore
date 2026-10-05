@@ -4,4 +4,16 @@
 .vscode/
 *.log
 .env
+.env.*
+!.env.example
 *.iml
+
+# Node and frontend build output
+node_modules/
+dist/
+coverage/
+.angular/
+
+# OS metadata
+.DS_Store
+Thumbs.db
