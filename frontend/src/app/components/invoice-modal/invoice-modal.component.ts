@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DialogDirective } from '../../directives/dialog.directive';
 import { CommonModule } from '@angular/common';
 import { Invoice } from '../../models/ecom.models';
 
 @Component({
   selector: 'app-invoice-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [DialogDirective, CommonModule],
   templateUrl: './invoice-modal.component.html',
   styleUrls: ['./invoice-modal.component.css']
 })

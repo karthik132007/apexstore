@@ -20,6 +20,20 @@ export class HeaderComponent {
   @Output() openAuthModal = new EventEmitter<void>();
   @Output() searchSubmitted = new EventEmitter<{ query: string; category: string }>();
 
+  isSearchOpen = signal(false);
+  isMobileMenuOpen = signal(false);
+
+  toggleSearch(): void {
+    this.isSearchOpen.update(value => !value);
+    if (this.isSearchOpen()) setTimeout(() => document.getElementById("product-search")?.focus());
+  }
+
+  closePanels(): void {
+    this.isSearchOpen.set(false);
+    this.isMobileMenuOpen.set(false);
+    this.closeAccountMenu();
+  }
+
   searchQuery = signal('');
   selectedCategory = signal('All');
   isAccountMenuOpen = signal(false);
@@ -53,6 +67,7 @@ export class HeaderComponent {
   onSearch(): void {
     const q = this.searchQuery().trim();
     const cat = this.selectedCategory();
+    this.closePanels();
     this.searchSubmitted.emit({ query: q, category: cat });
     this.router.navigate(['/'], {
       queryParams: {

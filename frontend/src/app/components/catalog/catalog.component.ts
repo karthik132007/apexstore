@@ -1,7 +1,9 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { RevealDirective } from '../../directives/reveal.directive';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/ecom.models';
@@ -11,16 +13,24 @@ import { ToastService } from '../../services/toast.service';
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, BannerStripComponent],
+  imports: [CommonModule, FormsModule, RouterModule, BannerStripComponent, RevealDirective],
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.css']
 })
-export class CatalogComponent implements OnInit {
+export class CatalogComponent implements OnInit, OnDestroy {
   private readonly productService = inject(ProductService);
   private readonly cartService = inject(CartService);
   private readonly toast = inject(ToastService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+
+  private querySubscription?: Subscription;
+  private productSubscription?: Subscription;
+
+  ngOnDestroy(): void {
+    this.querySubscription?.unsubscribe();
+    this.productSubscription?.unsubscribe();
+  }
 
   products = signal<Product[]>([]);
   isLoading = signal(true);
@@ -62,7 +72,7 @@ export class CatalogComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.querySubscription = this.route.queryParams.subscribe(params => {
       const cat = params['category'] || 'All';
       const search = params['search'] || '';
       const sort = params['sort'] || 'createdAt,desc';
@@ -81,7 +91,8 @@ export class CatalogComponent implements OnInit {
     this.isLoading.set(true);
     this.loadError.set(false);
 
-    this.productService.getProducts({
+    this.productSubscription?.unsubscribe();
+    this.productSubscription = this.productService.getProducts({
       page: this.currentPage(),
       size: this.pageSize(),
       sort: this.selectedSort(),
@@ -100,7 +111,6 @@ export class CatalogComponent implements OnInit {
         this.products.set([]);
         this.totalElements.set(0);
         this.totalPages.set(0);
-        this.toast.error('We couldn’t load the products. Please try again shortly.');
       }
     });
   }
@@ -145,14 +155,14 @@ export class CatalogComponent implements OnInit {
     this.activeCategory.set('All');
     this.searchKeyword.set('');
     this.selectedSort.set('createdAt,desc');
-    this.router.navigate(['/']);
+    this.router.navigate(['/'], { fragment: 'products' });
   }
 
   goToPage(page: number): void {
     if (page >= 0 && page < this.totalPages()) {
       this.currentPage.set(page);
       this.updateQueryParams({ page });
-      window.scrollTo({ top: 300, behavior: 'smooth' });
+      document.getElementById('products')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     }
   }
 
@@ -160,7 +170,8 @@ export class CatalogComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: params,
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
+      fragment: 'products'
     });
   }
 

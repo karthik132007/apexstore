@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, OnDestroy, Output, inject, signal } from '@angular/core';
+import { DialogDirective } from '../../directives/dialog.directive';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +11,7 @@ import { Order, OrderRequest, OrderStatus } from '../../models/ecom.models';
 @Component({
   selector: 'app-checkout-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [DialogDirective, CommonModule, FormsModule],
   templateUrl: './checkout-modal.component.html',
   styleUrls: ['./checkout-modal.component.css']
 })

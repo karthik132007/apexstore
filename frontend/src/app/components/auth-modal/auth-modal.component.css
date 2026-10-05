@@ -7,7 +7,7 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-xl);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   position: relative;
   animation: modalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -48,13 +48,13 @@
 /* Left Obsidian Panel */
 .auth-sidebar {
   width: 42%;
-  background: radial-gradient(ellipse at top left, #1e293b 0%, #0f172a 65%, #020617 100%);
+  background: #f3f3f3;
   color: #ffffff;
   padding: 40px 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .brand-tag {
@@ -75,7 +75,7 @@
 
 .sidebar-content p {
   font-size: 13.5px;
-  color: #cbd5e1;
+  color: #d4d4d4;
   line-height: 1.55;
 }
 
@@ -159,14 +159,14 @@
 }
 
 .chip-admin {
-  border-color: #fde68a;
-  background: #fefce8;
-  color: #b45309;
+  border-color: #e4e4e4;
+  background: #fbfbfb;
+  color: #626262;
 }
 
 .chip-admin:hover {
   background: var(--brand-accent);
-  color: #0b0f19;
+  color: #0f0f0f;
   border-color: var(--brand-accent);
 }
 
@@ -180,7 +180,7 @@
   align-items: center;
   gap: 8px;
   background: var(--brand-crimson-light);
-  border: 1px solid #fca5a5;
+  border: 1px solid #b7b7b7;
   color: var(--brand-crimson);
   padding: 9px 13px;
   border-radius: 4px;
@@ -224,7 +224,7 @@
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  border: 2px solid rgba(0, 0, 0, 0.4);
   border-radius: 50%;
   border-top-color: #fff;
   animation: spin 0.6s linear infinite;
@@ -253,3 +253,14 @@
     padding: 24px;
   }
 }
+
+.auth-sidebar { background: #f3f3f3; color: #171717; }
+.sidebar-content h2 { font-size: 30px; font-weight: 400; letter-spacing: -1.2px; }
+.sidebar-content p { color: #626262; }
+.brand-tag { color: #626262; font-weight: 500; letter-spacing: .12em; }
+.apex-auth-card { border-radius: 16px; }
+.tab-btn { font-weight: 400; }
+.auth-error-alert { border-color: #ccc; }
+
+.apex-auth-card { max-height: 90dvh; overflow-y: auto; }
+.apex-auth-card:focus { outline: none; }

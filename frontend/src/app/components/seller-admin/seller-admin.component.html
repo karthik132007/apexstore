@@ -58,7 +58,7 @@
               class="tab-link" 
               [class.active]="activeTab() === 'LISTINGS'" 
               (click)="activeTab.set('LISTINGS')">
-              📦 {{ auth.isAdmin() ? 'All Platform Listings' : 'My Inventory' }} ({{ products().length }})
+              □ {{ auth.isAdmin() ? 'All Platform Listings' : 'My Inventory' }} ({{ products().length }})
             </button>
             <button 
               type="button" 

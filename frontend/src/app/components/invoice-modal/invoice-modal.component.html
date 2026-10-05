@@ -1,5 +1,5 @@
 <div class="modal-backdrop" (click)="onBackdropClick($event)">
-  <div class="invoice-modal-card">
+  <div class="invoice-modal-card" appDialog role="dialog" aria-modal="true" aria-label="Order invoice" tabindex="-1" (appDialogEscape)="close.emit()">
     <div class="modal-header no-print">
       <div class="header-left">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--brand-accent)" stroke-width="2">

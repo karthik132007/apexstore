@@ -19,7 +19,7 @@
         <!-- Left Column: Gallery & Sticky CTAs -->
         <div class="media-column">
           <div class="main-image-box">
-            <img [src]="prod.imageUrl || '/product-placeholder.svg'" [alt]="prod.name" class="main-image">
+            <img [src]="prod.imageUrl || '/product-placeholder.svg'" [alt]="prod.name" class="main-image" (error)="onImageError($event)">
             
           </div>
 
@@ -72,9 +72,9 @@
           <div class="qty-control-row">
             <span class="qty-label">Quantity:</span>
             <div class="qty-stepper">
-              <button type="button" class="qty-btn" (click)="decrementQty()" [disabled]="quantity() <= 1">-</button>
+              <button type="button" class="qty-btn" aria-label="Decrease quantity" (click)="decrementQty()" [disabled]="quantity() <= 1">-</button>
               <span class="qty-value">{{ quantity() }}</span>
-              <button type="button" class="qty-btn" (click)="incrementQty()" [disabled]="quantity() >= prod.availableStock">+</button>
+              <button type="button" class="qty-btn" aria-label="Increase quantity" (click)="incrementQty()" [disabled]="quantity() >= prod.availableStock">+</button>
             </div>
             <span class="stock-indicator" [class.low]="prod.availableStock <= 3">
               @if (prod.availableStock > 0) {

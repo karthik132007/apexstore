@@ -1,8 +1,9 @@
 <footer class="apex-footer">
   <div class="fk-container footer-content">
-    <div class="footer-brand"><a routerLink="/" class="footer-wordmark">ApexMart<span>.</span></a><p>A place to find your everyday essentials.</p></div>
-    <nav aria-label="Shop"><h2>Explore</h2><a routerLink="/">All products</a><a routerLink="/" [queryParams]="{ category: 'Electronics' }">Electronics</a><a routerLink="/" [queryParams]="{ category: 'Home' }">Home</a></nav>
-    <nav aria-label="Your account"><h2>Your shopping</h2><a routerLink="/cart">Your cart</a><a routerLink="/orders">Orders &amp; invoices</a><a routerLink="/seller">Sell on ApexMart</a></nav>
+    <div class="footer-brand"><a routerLink="/" class="footer-wordmark">apexmart<span>®</span></a><p>A little less noise.<br>A little more everyday.</p></div>
+    <nav aria-label="Shop"><h2>Discover</h2><a routerLink="/" fragment="products">All objects</a><a routerLink="/" [queryParams]="{ category: 'Electronics' }" fragment="products">Technology</a><a routerLink="/" [queryParams]="{ category: 'Home' }" fragment="products">Home &amp; living</a><a routerLink="/" [queryParams]="{ category: 'Fashion' }" fragment="products">Everyday style</a></nav>
+    <nav aria-label="Your account"><h2>Make it yours</h2><a routerLink="/cart">Your bag</a><a routerLink="/orders">Orders &amp; invoices</a><a routerLink="/seller">Sell with us</a></nav>
+    <div class="footer-perspective"><span class="eyebrow">GOOD THINGS. BY DESIGN.</span><p>For the way<br>you live.</p><a routerLink="/" fragment="philosophy" class="text-link">Our perspective <span aria-hidden="true">↗</span></a></div>
   </div>
-  <div class="fk-container footer-bottom">© 2026 ApexMart</div>
+  <div class="fk-container footer-bottom"><span>© 2026 ApexMart</span><span>Considered objects. Endless possibilities.</span><a href="#main-content">Back to top ↑</a></div>
 </footer>
